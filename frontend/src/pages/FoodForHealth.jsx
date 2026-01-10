@@ -106,7 +106,7 @@ export default function FoodForHealth() {
     try {
       const user = JSON.parse(localStorage.getItem("sg_user"));
 
-      await api.post("/tx/add", {
+      await api.post("/api/tx/add", {
         userEmail: user.email,
         itemName: item,
         quantity: 1,

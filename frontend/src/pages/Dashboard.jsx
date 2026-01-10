@@ -82,7 +82,7 @@ export default function Dashboard() {
   /*  Fetch Items  */
   const fetchItems = async () => {
     if (!user?.email) return;
-    const res = await api.get(`/tx/get/${user.email}`);
+    const res = await api.get(`/api/tx/get/${user.email}`);
     setAllItems(res.data || []);
   };
 
@@ -181,13 +181,13 @@ export default function Dashboard() {
     if (!form.itemName || !form.price) return;
 
     if (editingId) {
-      await api.put(`/tx/update/${editingId}`, {
+      await api.put(`/api/tx/update/${editingId}`, {
         ...form,
         date: selectedDate,
         mode,
       });
     } else {
-      await api.post("/tx/add", {
+      await api.post("/api/tx/add", {
         userEmail: user.email,
         ...form,
         date: selectedDate,
@@ -201,7 +201,7 @@ export default function Dashboard() {
   };
 
   const deleteItem = async (id) => {
-    await api.delete(`/tx/delete/${id}`);
+    await api.delete(`/api/tx/delete/${id}`);
     fetchItems();
   };
 
