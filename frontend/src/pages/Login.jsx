@@ -1,33 +1,26 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../lib/api";
 
 export default function Login() {
-  const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const login = async () => {
-    if (!email) return alert("Email required");
+  const login = () => {
+    if (!email) {
+      alert("Email required");
+      return;
+    }
 
     setLoading(true);
 
-    try {
-      const res = await api.post("/api/auth/login", { email });
+    // write storage FIRST
+    localStorage.setItem(
+      "sg_user",
+      JSON.stringify({ email })
+    );
+    localStorage.setItem("sg_token", "dummy-token");
 
-      if (res.data.success) {
-        localStorage.setItem("sg_user", JSON.stringify(res.data.user));
-        navigate("/dashboard");
-      } else {
-        alert("Login failed");
-      }
-    } catch (err) {
-      alert("Login error");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+    // FORCE hard reload with cache-buster
+    window.location.replace("/dashboard?from=login");
   };
 
   return (

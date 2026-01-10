@@ -76,8 +76,12 @@ export default function Dashboard() {
 
   /*  Auth Guard  */
   useEffect(() => {
-    if (!user) navigate("/login");
-  }, [user, navigate]);
+  const user = localStorage.getItem("sg_user");
+    if (!user) {
+     window.location.replace("/login");
+   }
+  }, []);
+
 
   /*  Fetch Items  */
   const fetchItems = async () => {
