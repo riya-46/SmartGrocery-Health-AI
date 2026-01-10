@@ -6,7 +6,6 @@ export default function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState(""); // backend me use nahi ho raha, but ok
   const [loading, setLoading] = useState(false);
 
   const login = async (e) => {
@@ -14,21 +13,18 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const res = await api.post("/api/auth/login", {
-        email,
-      });
+      const res = await api.post("/api/auth/login", { email });
 
       if (res.data.success) {
         localStorage.setItem("sg_user", JSON.stringify(res.data.user));
-        localStorage.setItem("sg_token", "dummy-token"); // optional (future JWT)
-
+        localStorage.setItem("sg_token", "dummy-token"); // needed for interceptor
         navigate("/dashboard");
       } else {
-        alert(res.data.message || "Login failed");
+        alert("Login failed");
       }
     } catch (err) {
-      console.error(err);
       alert("Login error");
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -45,15 +41,6 @@ export default function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <br /><br />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
             required
           />
           <br /><br />
