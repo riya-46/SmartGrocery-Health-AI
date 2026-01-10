@@ -4,7 +4,6 @@ import api from "../lib/api";
 
 export default function Login() {
   const navigate = useNavigate();
-
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -16,15 +15,17 @@ export default function Login() {
       const res = await api.post("/api/auth/login", { email });
 
       if (res.data.success) {
-        localStorage.setItem("sg_user", JSON.stringify(res.data.user));
-        localStorage.setItem("sg_token", "dummy-token"); // needed for interceptor
+        localStorage.setItem(
+          "sg_user",
+          JSON.stringify(res.data.user)
+        );
         navigate("/dashboard");
       } else {
         alert("Login failed");
       }
     } catch (err) {
-      alert("Login error");
       console.error(err);
+      alert("Login error");
     } finally {
       setLoading(false);
     }
